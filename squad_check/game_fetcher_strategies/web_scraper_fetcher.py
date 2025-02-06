@@ -4,6 +4,7 @@ from .base import GameFetcherStrategy
 from squad_check.logger import logger
 from squad_check.chatgpt_client import ChatGptClient
 import re
+from openai import OpenAIError
 
 class WebScraperGameFetcher(GameFetcherStrategy):
     """Fetches game info by scraping the league schedule webpage using BeautifulSoup."""
@@ -94,6 +95,12 @@ class WebScraperGameFetcher(GameFetcherStrategy):
             })
             raise ValueError(f"No upcoming games found for team: {self.team_name}")
 
+        except OpenAIError as e:
+            logger.error("OpenAI API Error", extra={
+                "task_name": "WebScraperGameFetcher._parse_game_info",
+                "error": str(e)
+            })
+            return None
         except Exception as e:
             logger.error("HTML parsing failed", extra={
                 "task_name": "WebScraperGameFetcher._parse_game_info",
