@@ -1,5 +1,5 @@
 from openai import OpenAI
-from squad_check.logger import logger
+from matchday.logger import logger
 
 class ChatGptClient:
     """Handles ChatGPT queries for football match-related logic."""

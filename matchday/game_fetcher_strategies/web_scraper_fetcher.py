@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from .base import GameFetcherStrategy
-from squad_check.logger import logger
-from squad_check.chatgpt_client import ChatGptClient
+from matchday.logger import logger
+from matchday.chatgpt_client import ChatGptClient
 import re
 from openai import OpenAIError
 
@@ -74,18 +74,16 @@ class WebScraperGameFetcher(GameFetcherStrategy):
                 opponoent_colour = away_shirt_color if home_or_away == "Home" else home_shirt_color
 
                 return {
-                    "next_game": {
-                        "date": date,
-                        "time": time,
-                        "opponent": opponent,
-                        "home_or_away": home_or_away,
-                        "location": location,
-                        "shirt_colours": {
-                            "team": team_colour,
-                            "opponent": opponoent_colour,
-                            "conflict_exists": ChatGptClient().shirt_colour_conflict_exists(team_colour, opponoent_colour)
-                        }
-                    }
+                    "date": date,
+                    "time": time,
+                    "opponent": opponent,
+                    "home_or_away": home_or_away,
+                    "location": location,
+                    "shirt_colours": {
+                        "team": team_colour,
+                        "opponent": opponoent_colour,
+                        # "conflict_exists": ChatGptClient().shirt_colour_conflict_exists(team_colour, opponoent_colour)
+                    }       
                 }
             
             logger.warning("No upcoming games found", extra={
